@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -24,9 +25,9 @@ Route::resource('admin/product', AdminProductController::class)->middleware('aut
 Route::get('admin/product/{product}/delete', [AdminProductController::class, 'destroy'])->middleware('auth');
 Route::post('admin/product/{product}', [AdminProductController::class, 'update'])->middleware('auth');
 
-Route::resource('admin/attribute', AdminProductController::class)->middleware('auth');
-Route::get('admin/attribute/{attribute}/delete', [AdminProductController::class, 'destroy'])->middleware('auth');
-Route::post('admin/attribute/{attribute}', [AdminProductController::class, 'update'])->middleware('auth');
+Route::resource('admin/attribute', AttributeController::class)->middleware('auth');
+Route::get('admin/attribute/{attribute}/delete', [AttributeController::class, 'destroy'])->middleware('auth');
+Route::post('admin/attribute/{attribute}', [AttributeController::class, 'update'])->middleware('auth');
 
 
 Route::resource('admin/user', UserController::class)->middleware('auth');

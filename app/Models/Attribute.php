@@ -12,6 +12,8 @@ class Attribute extends Model
 
     public $timestamps = false;
 
+    protected $guarded = [];
+
     public function values(): HasMany
     {
         return $this->hasMany(Value::class);

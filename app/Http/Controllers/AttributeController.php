@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreAttributeRequest;
 use App\Models\Attribute;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -21,7 +22,7 @@ class AttributeController extends Controller
 
     public function index(): View
     {
-        return view('attribute.index', [
+        return view('attributes.index', [
             'attributes' => Attribute::paginate(15)
         ]);
     }
@@ -29,21 +30,17 @@ class AttributeController extends Controller
 
     public function create(): View
     {
-        return view('products.form', [
-            'brands' => Brand::all(),
-            'countries' => Country::all(),
-            'types' => Type::all()
-        ]);
+        return view('attributes.form');
     }
 
-    public function store(StoreProductRequest $request): RedirectResponse
+    public function store(StoreAttributeRequest $request): RedirectResponse
     {
-        $productData = $request->validated();
-        if (!$this->productService->store($productData))
+        $attributeData = $request->validated();
+        if (!$this->attributeService->store($attributeData))
         {
-            throw new \Exception("Can't store new product", 502);
+            throw new \Exception("Can't store new attribute", 502);
         }
-        return redirect('/admin/product');
+        return redirect('/admin/attribute');
     }
 
     /**
@@ -57,35 +54,31 @@ class AttributeController extends Controller
         //
     }
 
-    public function edit(Product $product): View
+    public function edit(Attribute $attribute): View
     {
-        return view("products.form", [
-            'product' => $product,
-            'brands' => Brand::all(),
-            'countries' => Country::all(),
-            'types' => Type::all()
+        return view("attributes.form", [
+            'attribute' => $attribute,
         ]);
     }
 
     /**
      * @throws \Exception
      */
-    public function update(Product $product, StoreProductRequest $request): RedirectResponse
+    public function update(Attribute $attribute, StoreAttributeRequest $request): RedirectResponse
     {
-        if (!$this->productService->update($product, $request->validated()))
-        {
+        if (!$this->attributeService->update($attribute, $request->validated())) {
             throw new \Exception("Can't store new product", 502);
         }
 
-        return redirect('/admin/product');
+        return redirect('/admin/attribute');
     }
 
-    public function destroy(Product $product): RedirectResponse
+    public function destroy(Attribute $attribute): RedirectResponse
     {
-        if (!$this->productService->destroy($product)) {
+        if (!$this->attributeService->destroy($attribute)) {
             return back()->withErrors("DestroyError");
         }
 
-        return redirect("/admin/product");
+        return redirect("/admin/attribute");
     }
 }
