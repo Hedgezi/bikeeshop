@@ -1,0 +1,31 @@
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    container_name: nginx_app
+    depends_on:
+      - app
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    volumes:
+      - ./:/var/www/
+    container_name: app
+    depends_on:
+      - db
+  db:
+    image: mysql:latest
+    restart: always
+    volumes:
+      - ./tmp/db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: laradb
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8081:3306"
+    container_name: db_app
