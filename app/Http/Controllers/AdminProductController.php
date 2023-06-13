@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductsListRequest;
 use App\Http\Requests\StoreProductRequest;
+use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Country;
 use App\Models\Product;
@@ -13,7 +15,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
 use Illuminate\Http\Response;
-use mysql_xdevapi\Exception;
 
 class AdminProductController extends Controller
 {
@@ -24,10 +25,10 @@ class AdminProductController extends Controller
 
     }
 
-    public function index(): View
+    public function index(ProductsListRequest $request): View
     {
         return view('products.index', [
-            'products' => Product::paginate(15)
+            'products' => Product::query()->paginate($request->getPerPage(), ['*'], 'page', $request->getPage())
         ]);
     }
 
@@ -37,7 +38,8 @@ class AdminProductController extends Controller
         return view('products.form', [
             'brands' => Brand::all(),
             'countries' => Country::all(),
-            'types' => Type::all()
+            'types' => Type::all(),
+            'attributes' => Attribute::all(),
         ]);
     }
 
@@ -68,7 +70,8 @@ class AdminProductController extends Controller
             'product' => $product,
             'brands' => Brand::all(),
             'countries' => Country::all(),
-            'types' => Type::all()
+            'types' => Type::all(),
+            'attributes' => Attribute::all(),
         ]);
     }
 
@@ -77,6 +80,7 @@ class AdminProductController extends Controller
      */
     public function update(Product $product, StoreProductRequest $request): RedirectResponse
     {
+        dd($request->validated());
         if (!$this->productService->update($product, $request->validated()))
         {
             throw new \Exception("Can't store new product", 502);
@@ -93,4 +97,5 @@ class AdminProductController extends Controller
 
         return redirect("/admin/product");
     }
+
 }

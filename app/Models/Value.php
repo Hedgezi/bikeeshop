@@ -11,6 +11,9 @@ class Value extends Model
     use HasFactory;
 
     public $timestamps = false;
+
+    protected $guarded = [];
+
     public function variant(): BelongsTo
     {
         return $this->belongsTo(Variant::class);

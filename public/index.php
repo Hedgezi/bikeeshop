@@ -2,49 +2,6 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-//$name = "kolya";
-//$age = 18;
-//$height = 183.25;
-//$isMale = true;
-//$sks = null;
-//$education = [
-//    "school" => 228,
-//    "university" => "vut",
-//];
-//
-//class Human {
-//    public string $name;
-//    public int $age;
-//    public float $height;
-//    public bool $isMale;
-//    public array $education;
-//
-//    /**
-//     * @param string $name
-//     * @param int $age
-//     * @param float $height
-//     * @param bool $isMale
-//     * @param array $education
-//     */
-//    public function __construct(string $name, int $age, float $height, bool $isMale, array $education)
-//    {
-//        $this->name = $name;
-//        $this->age = $age;
-//        $this->height = $height;
-//        $this->isMale = $isMale;
-//        $this->education = $education;
-//    }
-//}
-//
-//$human = new Human($name, $age, $height, $isMale, $education);
-//dd($_SERVER);
-//
-//
-//
-//
-//
-//die;
-
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 

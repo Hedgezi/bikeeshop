@@ -20,7 +20,6 @@ class CreateProductsTable extends Migration
             $table->foreignId('country_id');
             $table->foreignId('brand_id');
             $table->foreignId('type_id');
-            $table->string('picture')->nullable();
         });
     }
 

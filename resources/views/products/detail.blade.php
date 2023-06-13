@@ -4,8 +4,10 @@
     <div class="container">
         <div class="row">
             <div class="col-4">
-                @if($product->image)
-                    <img src="{{ asset('storage/'.$product->image) }}" class="w-100">
+                @if($images)
+                    @foreach($images as $image)
+                        <img src="{{ Storage::url($image['path']) }}" class="w-100">
+                    @endforeach
                 @endif
             </div>
             <div class="col-8">
@@ -13,7 +15,7 @@
                     <h1>{{ $product->name }}</h1>
                 </div>
                 <div class="row">
-                    <h3>{{ $product->price }}</h3>
+                    <h3></h3>
                 </div>
                 <div class="row">
                     <h3>{{ $product->description }}</h3>

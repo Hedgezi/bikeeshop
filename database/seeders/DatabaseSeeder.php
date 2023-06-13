@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Value;
 use App\Models\Variant;
 use Illuminate\Database\Seeder;
 use App\Models\Type;
@@ -53,18 +54,59 @@ class DatabaseSeeder extends Seeder
             'description' => 'The cheapest you can find!'
         ]);
 
-        $attributeColor = Attribute::create([
-            'name' => 'Color'
-        ]);
-        $attributeBreaks = Attribute::create([
-            'name' => 'Breaks type',
-            'description' => 'Breaks type used on bike'
-        ]);
-
         Brand::factory(3)->create();
 //        Variant::factory(5)->create();
         Product::factory(10)->create(['type_id'=> $typeBike->id]);
         Product::factory(10)->create(['type_id'=> $typeScooter->id]);
         Product::factory(10)->create(['type_id'=> $typeSkateboard->id]);
+
+        $attributeColor = Attribute::create([
+            'name' => 'Color'
+        ]);
+        $attributeComputer = Attribute::create([
+            'name' => 'Presence of bike computer',
+            'description' => 'Is there bike computer on the bike'
+        ]);
+        $attributeElectro = Attribute::create([
+            'name' => 'Is it electro'
+        ]);
+        $attributeBaby = Attribute::create([
+           'name' => 'Baby chair'
+        ]);
+        $attributeMountain = Attribute::create([
+            'name' => 'Mountain'
+        ]);
+
+        $firstVar = Variant::create([
+            'price' => 2550,
+            'product_id' => 1,
+            "quantity" => 2,
+        ]);
+        $secondVar = Variant::create([
+            'price' => 3000,
+            'product_id' => 1,
+            "quantity" => 4,
+        ]);
+
+        Value::create([
+            'variant_id' => $firstVar->id,
+            'attribute_id' => $attributeColor->id,
+            'value' => 'Red'
+        ]);
+        Value::create([
+            'variant_id' => $firstVar->id,
+            'attribute_id' => $attributeComputer->id,
+            'value' => 'No'
+        ]);
+        Value::create([
+            'variant_id' => $secondVar->id,
+            'attribute_id' => $attributeColor->id,
+            'value' => 'Blue'
+        ]);
+        Value::create([
+            'variant_id' => $secondVar->id,
+            'attribute_id' => $attributeComputer->id,
+            'value' => 'Yes'
+        ]);
     }
 }
