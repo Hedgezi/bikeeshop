@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreProductRequest extends FormRequest
 {
@@ -30,9 +31,10 @@ class StoreProductRequest extends FormRequest
             'country_id' => ['required', 'gt:0', 'exists:countries,id'],
             'type_id' => ['required', 'gt:0', 'exists:types,id'],
             'variants' => ['array'],
+            'variants.*.id' => ['exists:variants,id'], // проверять что эти value принадлежат нашему измененному продукту
             'variants.*.price' => ['required', 'gt:0'],
             'variants.*.quantity' => ['required', 'gt:0'],
-            'variants.*.attribute_id.*' => ['required', 'exists:attributes,id', 'distinct'],
+            'variants.*.attribute_id.*' => ['required', 'exists:attributes,id'], //distinct
             'variants.*.attribute_value.*' => ['required'],
             'image.*' => ['image', 'mimes:jpeg,png,jpg,webp'],
         ];

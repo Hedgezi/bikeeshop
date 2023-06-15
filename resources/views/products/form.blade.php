@@ -70,6 +70,7 @@
                     @isset($product)
                         @foreach($product->variants()->get() as $variant)
                             <tr>
+                                <input type="hidden" name="variants[{{ $loop->index }}][id]" value="{{ $variant->id }}">
                                 <td>
                                     <div class="form-floating row m-2">
                                         <input class="form-control" type="text" id="price{{ $loop->index }}" placeholder="Price" name="variants[{{ $loop->index }}][price]" value="{{ $variant->price }}">
@@ -125,6 +126,7 @@
         // }
         let imagesTag = document.getElementById("images");
         let counterImages = imagesTag.childElementCount;
+        console.log(counterVariant);
 
         document.addEventListener("DOMContentLoaded", function() {
             let addButton = document.getElementById("addVariant");
@@ -256,7 +258,7 @@
 
             let attributesSelect = document.createElement("select");
             attributesSelect.className = "form-select row mt-2 mb-2";
-            attributesSelect.name = `variants[${counterVariant-1}][attribute_id][]`;
+            attributesSelect.name = `variants[${addTo-1}][attribute_id][]`;
             @foreach($attributes as $attribute)
                 let attribute{{ $loop->iteration }} = document.createElement("option");
                 attribute{{ $loop->iteration }}.value = {{ $attribute->id }};
@@ -271,7 +273,7 @@
             attributeInput.type = "text";
             attributeInput.placeholder = "Value";
             attributeInput.id = ("attributeValue"+counterVariant)+numberOfAttributes;
-            attributeInput.name = `variants[${counterVariant-1}][attribute_value][]`;
+            attributeInput.name = `variants[${addTo-1}][attribute_value][]`;
             let attributeLabel = document.createElement("label");
             attributeLabel.for = ("attributeValue"+counterVariant)+numberOfAttributes;
             attributeLabel.innerText = "Value";

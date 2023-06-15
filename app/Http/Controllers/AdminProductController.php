@@ -80,7 +80,7 @@ class AdminProductController extends Controller
      */
     public function update(Product $product, StoreProductRequest $request): RedirectResponse
     {
-        dd($request->validated());
+//        dd($request->validated());
         if (!$this->productService->update($product, $request->validated()))
         {
             throw new \Exception("Can't store new product", 502);
