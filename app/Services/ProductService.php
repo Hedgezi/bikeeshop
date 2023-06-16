@@ -13,7 +13,6 @@ use Throwable;
 class ProductService
 {
 
-
     public function store(array $data): bool
     {
         $product = new Product();
@@ -98,7 +97,7 @@ class ProductService
         $savedImage->save();
     }
 
-    public function getImageUrl(Product $product)
+    public function getImageUrl(Product $product): ?string
     {
         $allImages = $product->images();
         if ($allImages) {
