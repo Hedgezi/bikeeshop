@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Services\UserService;
 use Illuminate\Http\Response;
+use mysql_xdevapi\Exception;
 
 class UserController extends Controller
 {
@@ -20,7 +21,7 @@ class UserController extends Controller
 
     public function index(): View
     {
-            return view('users.index', [
+            return view('admin.users.index', [
                 'users' => User::paginate(10)
             ]);
     }
@@ -28,7 +29,7 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users.form');
+        return view('admin.users.form');
     }
 
     public function store(StoreUserRequest $request)
@@ -36,14 +37,14 @@ class UserController extends Controller
 
         if ($this->userService->store($request->validated()) == false)
         {
-            throw \Error::class;
+            throw new Exception("Can't store new user", 502);
         }
         return redirect('/admin/user');
     }
 
     public function edit(User $user)
     {
-        return view("users.editform", [
+        return view("admin.users.editform", [
             'user' => $user
         ]);
     }
@@ -52,7 +53,7 @@ class UserController extends Controller
     {
         if ($this->userService->update($user, $request->validated()) == false)
         {
-            throw \Error::class;
+            throw new Exception("Can't update user", 502);
         }
 
         return redirect('/admin/user');

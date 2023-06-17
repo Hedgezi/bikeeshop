@@ -22,7 +22,7 @@ class AttributeController extends Controller
 
     public function index(): View
     {
-        return view('attributes.index', [
+        return view('admin.attributes.index', [
             'attributes' => Attribute::paginate(15)
         ]);
     }
@@ -30,7 +30,7 @@ class AttributeController extends Controller
 
     public function create(): View
     {
-        return view('attributes.form');
+        return view('admin.attributes.form');
     }
 
     public function store(StoreAttributeRequest $request): RedirectResponse
@@ -56,7 +56,7 @@ class AttributeController extends Controller
 
     public function edit(Attribute $attribute): View
     {
-        return view("attributes.form", [
+        return view("admin.attributes.form", [
             'attribute' => $attribute,
         ]);
     }

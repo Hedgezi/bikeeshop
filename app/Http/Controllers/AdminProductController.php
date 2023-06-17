@@ -27,7 +27,7 @@ class AdminProductController extends Controller
 
     public function index(ProductsListRequest $request): View
     {
-        return view('products.index', [
+        return view('admin.products.index', [
             'products' => Product::query()->paginate($request->getPerPage(), ['*'], 'page', $request->getPage())
         ]);
     }
@@ -35,7 +35,7 @@ class AdminProductController extends Controller
 
     public function create(): View
     {
-        return view('products.form', [
+        return view('admin.products.form', [
             'brands' => Brand::all(),
             'countries' => Country::all(),
             'types' => Type::all(),
@@ -66,7 +66,7 @@ class AdminProductController extends Controller
 
     public function edit(Product $product): View
     {
-        return view("products.form", [
+        return view("admin.products.form", [
             'product' => $product,
             'brands' => Brand::all(),
             'countries' => Country::all(),

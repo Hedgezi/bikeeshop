@@ -10,9 +10,9 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
 
-    public function catalogue(Request $request): View
+    public function index(Request $request): View
     {
-        return view('products.catalogue', [
+        return view('products.index', [
             'products' => Product::paginate(15)
         ]);
     }
