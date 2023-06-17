@@ -15,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 
 class AdminProductController extends Controller
 {

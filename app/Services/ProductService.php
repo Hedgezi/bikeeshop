@@ -7,7 +7,9 @@ use App\Models\Image;
 use App\Models\Product;
 use App\Models\Value;
 use App\Models\Variant;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class ProductService
@@ -19,12 +21,7 @@ class ProductService
         $product->fill($data);
         $result = $product->save();
 
-        $this->setVariants($data['variants'], $product);
-
-        foreach ($data['image'] ?? [] as $image)
-        {
-            $this->setImage($product['id'], $image);
-        }
+        $this->update($product, $data);
 
         return $result;
     }
@@ -43,9 +40,10 @@ class ProductService
 
         $this->setVariants($data['variants'], $product);
 
-        foreach ($data['image'] ?? [] as $image)
+        $this->deleteUnusedImages($product->images, collect($data['image_id'] ?? []));
+        if ($data['image'] ?? null)
         {
-            $this->setImage($product['id'], $image);
+            $this->addImages($product['id'], $data['image']);
         }
 
         return $product->update();
@@ -86,15 +84,32 @@ class ProductService
         }
     }
 
-    public function setImage(int $productId, UploadedFile $image)
+    public function deleteUnusedImages(Collection $oldImages, \Illuminate\Support\Collection $newImages)
     {
-        $imageName = $productId . '.' . time() . '.' . $image->getClientOriginalExtension();
-        $image->storeAs('public', $imageName);
+        $oldImageIds = $oldImages->pluck('id');
 
-        $savedImage = new Image();
-        $savedImage['path'] = $imageName;
-        $savedImage['product_id'] = $productId;
-        $savedImage->save();
+        $unusedImages = $oldImageIds->diff($newImages);
+        foreach ($unusedImages as $imageId)
+        {
+            $image = Image::find($imageId);
+            Storage::delete('public/' . $image['path']);
+            $image->delete();
+        }
+    }
+
+    public function addImages(int $productId, array $images): void
+    {
+        $time = time();
+        for ($i = 0; $i < count($images); $i++)
+        {
+            $imageName = $productId . '_' . $time . '_' . $i . '.' . $images[$i]->getClientOriginalExtension();
+            $images[$i]->storeAs('public', $imageName);
+
+            $savedImage = new Image();
+            $savedImage['path'] = $imageName;
+            $savedImage['product_id'] = $productId;
+            $savedImage->save();
+        }
     }
 
     public function getImageUrl(Product $product): ?string

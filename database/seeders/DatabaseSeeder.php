@@ -12,6 +12,7 @@ use App\Models\Value;
 use App\Models\Variant;
 use Illuminate\Database\Seeder;
 use App\Models\Type;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,12 +23,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-        Type::truncate();
-        Category::truncate();
-        Brand::truncate();
-        Product::truncate();
-        Variant::truncate();
+        Storage::delete(array_filter(Storage::allFiles('public'), static function ($file) {
+            return !in_array($file, ['public/.gitignore', 'public/storage']);
+        }));
 
         User::create([
             'name' => 'root',

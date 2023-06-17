@@ -37,6 +37,7 @@ class StoreProductRequest extends FormRequest
             'variants.*.attribute_id.*' => ['required', 'exists:attributes,id'], //distinct
             'variants.*.attribute_value.*' => ['required'],
             'image.*' => ['image', 'mimes:jpeg,png,jpg,webp'],
+            'image_id.*' => ['exists:images,id', 'distinct'], // проверять что эти image принадлежат нашему конкретному продукту
         ];
     }
 }

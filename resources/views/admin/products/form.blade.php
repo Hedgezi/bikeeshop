@@ -15,12 +15,13 @@
                     <tbody>
                         @isset($product)
                             @foreach($product->images as $image)
-                                <tr>
+                                <tr id="image{{ $image->id }}">
                                     <td>
                                         <img src="{{ asset('storage/' . $image->path) }}" alt="{{ $image->path }}" width="100px">
+                                        <input type="hidden" name="image_id[]" value="{{ $image->id }}">
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger">-</button>
+                                        <button type="button" class="btn btn-danger" id="imageDelete{{ $loop->index }}">-</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -145,12 +146,9 @@
     <script>
         let vTable = document.getElementById("variantsTable");
         let counterVariant = vTable.childElementCount;
-        // for (let i = 0; i < counterVariant; i++) {
-        //     counterAttributes[i] = document.getElementById("attributesSelect" + i).childElementCount;
-        // }
+
         let imagesTag = document.getElementById("images");
         let counterImages = imagesTag.childElementCount;
-        console.log(counterVariant);
 
         document.addEventListener("DOMContentLoaded", function() {
             let addButton = document.getElementById("addVariant");
@@ -168,6 +166,18 @@
             });
         });
 
+        @isset($product)
+            @foreach($product->images as $image)
+                document.addEventListener("DOMContentLoaded", function() {
+                    let imageDeleteButton = document.getElementById("imageDelete{{ $loop->index }}");
+                    imageDeleteButton.addEventListener("click", function(event) {
+                        event.preventDefault();
+                        deleteImage({{ $image->id }});
+                    });
+                });
+            @endforeach
+        @endisset
+
         function addInput() {
             let tableRow = document.createElement("tr");
 
@@ -177,8 +187,6 @@
             attributesSelectColumn.id = "attributesSelect"+counterVariant;
             let attributesValueColumn = document.createElement("td");
             attributesValueColumn.id = "attributesValue"+counterVariant;
-            // let addAttributeColumn = document.createElement("td");
-            // addAttributeColumn.id = "addAttribute"+counterVariant;
 
             let priceDiv = document.createElement("div");
             priceDiv.className = "form-floating row m-2";
@@ -226,18 +234,6 @@
             attributeLabel.for = "attributeValue"+counterVariant;
             attributeLabel.innerText = "Value";
 
-            // let addAttributeButton = document.createElement("button");
-            // addAttributeButton.id = "addAttribute"+counterVariant;
-            // addAttributeButton.className = "btn btn-dark";
-            //
-            // document.addEventListener("DOMContentLoaded", function() {
-            //     let addAttributeButton = document.getElementById("addAttribute"+counterVariant);
-            //     addAttributeButton.addEventListener("click", function(event) {
-            //         event.preventDefault();
-            //         addAttribute();
-            //     });
-            // });
-
             priceDiv.appendChild(priceInput);
             priceDiv.appendChild(priceLabel);
             priceColumn.appendChild(priceDiv);
@@ -255,9 +251,6 @@
             attributeDiv.appendChild(attributeLabel);
             attributesValueColumn.appendChild(attributeDiv);
             tableRow.appendChild(attributesValueColumn);
-
-            // addAttributeColumn.appendChild(addAttributeButton);
-            // tableRow.appendChild(addAttributeColumn);
 
             let container = document.getElementById("variantsTable");
             container.appendChild(tableRow);
@@ -308,8 +301,9 @@
             attributesValues.appendChild(attributeDiv);
 
         }
-        function addImage() {
-
+        function deleteImage(id) {
+            let image = document.getElementById("image"+id);
+            image.remove();
         }
     </script>
 @endsection
