@@ -5,6 +5,30 @@
         @csrf
         <div class="container">
             <div class="row m-3 col" id="images">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Image</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @isset($product)
+                            @foreach($product->images as $image)
+                                <tr>
+                                    <td>
+                                        <img src="{{ asset('storage/' . $image->path) }}" alt="{{ $image->path }}" width="100px">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger">-</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endisset
+                    </tbody>
+                </table>
+            </div>
+            <div class="row m-3 col" id="image">
                 <input type="file" name="image[]" class="row m-1" multiple>
             </div>
             <div class="row form-floating m-3">
