@@ -15,7 +15,13 @@
                     <h1>{{ $product->name }}</h1>
                 </div>
                 <div class="row">
-                    <h3></h3>
+{{--                    <select class="form-select">--}}
+{{--                        @if($product->variants)--}}
+{{--                        @foreach($product->variants)--}}
+
+{{--                        @endforeach--}}
+{{--                        @endif--}}
+{{--                    </select>--}}
                 </div>
                 <div class="row">
                     <h3>{{ $product->description }}</h3>

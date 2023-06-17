@@ -29,11 +29,11 @@ Route::resource('admin/attribute', AttributeController::class)->middleware('auth
 Route::get('admin/attribute/{attribute}/delete', [AttributeController::class, 'destroy'])->middleware('auth');
 Route::post('admin/attribute/{attribute}', [AttributeController::class, 'update'])->middleware('auth');
 
-
 Route::resource('admin/user', UserController::class)->middleware('auth');
 Route::get('admin/user/{user}/delete', [UserController::class, 'destroy'])->middleware('auth');
 Route::post('admin/user/{user}', [UserController::class, 'update'])->middleware('auth');
 
+Route::get('product', [ProductController::class, 'catalogue']);
 Route::get('product/{product}', [ProductController::class, 'show']);
 
 
