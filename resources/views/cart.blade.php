@@ -32,7 +32,10 @@
                 </div>
                 <div class="col-2">
                     <div class="row">
-                        <h3 class="col-9" id="price{{ $loop->index }}">{{ $item->price }} -.</h3>
+                        <div class="col-9">
+                            <h3 id="price{{ $loop->index }}">{{ $item->price }} -.</h3>
+{{--                            <h3> -.</h3>--}}
+                        </div>
                         <input type="number" name="quantity" id="quantity{{ $loop->index }}" value="{{ $item->quantity }}" class="h-50 text-center col" min="1">
                         <div class="col">
                             <form action="/delete-from-cart" method="POST">
@@ -51,7 +54,7 @@
     @endif
     <div class="row">
         <div class="col">
-            <h3>Total: {{ $user->cart->total() }} -.</h3>
+            <h3 id="total">Total: {{ $user->cart->total() }} -.</h3>
         </div>
         <div class="col-2">
             <form action="/checkout" method="POST">
@@ -61,6 +64,32 @@
         </div>
     </div>
     <script>
-        function calculateTotal()
+        let quantities = [];
+        function calculateTotal(index) {
+            let quantityInput = document.getElementById("quantity" + index);
+            let price = document.getElementById("price" + index);
+            let total = document.getElementById("total");
+            let totalValue = parseFloat(total.innerText.split(" ")[1]);
+            let priceValue = parseFloat(price.innerText.split(" ")[0].replace(",", "."));
+            let quantityValue = parseFloat(quantityInput.value);
+            if (quantityValue < quantities[index]) {
+                totalValue -= priceValue;
+            } else {
+                totalValue += priceValue;
+            }
+            quantities[index] = quantityValue;
+            total.innerText = "Total: " + totalValue.toFixed(2) + " -.";
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            @for($i = 0; $i < count($user->cart->items); $i++)
+                let quantityInput{{ $i }} = document.getElementById("quantity{{ $i }}");
+                quantities.push(quantityInput{{ $i }}.value);
+                quantityInput{{ $i }}.addEventListener("input", function (event) {
+                    event.preventDefault();
+                    calculateTotal({{ $i }});
+                });
+            @endfor
+        });
     </script>
 @endsection
