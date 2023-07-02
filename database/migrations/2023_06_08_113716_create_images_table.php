@@ -19,7 +19,8 @@ class CreateImagesTable extends Migration
             $table->timestamps();
             $table->string('name')->nullable();
             $table->string('path');
-            $table->foreignId('product_id');
+            $table->integer('imageable_id');
+            $table->string('imageable_type');
         });
     }
 

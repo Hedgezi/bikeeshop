@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Attribute;
 use App\Models\Brand;
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
@@ -24,13 +25,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Storage::delete(array_filter(Storage::allFiles('public'), static function ($file) {
-            return !in_array($file, ['public/.gitignore', 'public/storage']);
+            return !in_array($file, ['public/.gitignore', 'public/storage', 'public/blank.png']);
         }));
 
         User::create([
             'name' => 'root',
             'email' => 'root@root.com',
             'password' => bcrypt('rootrootroot')
+        ]);
+        Cart::create([
+            'user_id' => 1
         ]);
 
         $typeBike = Type::create([
@@ -52,12 +56,6 @@ class DatabaseSeeder extends Seeder
             'description' => 'The cheapest you can find!'
         ]);
 
-        Brand::factory(3)->create();
-//        Variant::factory(5)->create();
-        Product::factory(10)->create(['type_id'=> $typeBike->id]);
-        Product::factory(10)->create(['type_id'=> $typeScooter->id]);
-        Product::factory(10)->create(['type_id'=> $typeSkateboard->id]);
-
         $attributeColor = Attribute::create([
             'name' => 'Color'
         ]);
@@ -69,11 +67,25 @@ class DatabaseSeeder extends Seeder
             'name' => 'Is it electro'
         ]);
         $attributeBaby = Attribute::create([
-           'name' => 'Baby chair'
+            'name' => 'Baby chair'
         ]);
         $attributeMountain = Attribute::create([
             'name' => 'Mountain'
         ]);
+
+        Brand::factory(3)->create();
+        Product::factory(10)->create(['type_id'=> $typeBike->id]);
+        Product::factory(10)->create(['type_id'=> $typeScooter->id]);
+        Product::factory(10)->create(['type_id'=> $typeSkateboard->id]);
+        for ($j = 1; $j < 30; $j++)
+        {
+            $valueFactory = Value::factory();
+            Variant::factory(1)->create(['product_id' => $j + 1]);
+            for ($i = 0; $i < 1; $i++)
+            {
+                $valueFactory->create(['variant_id' => $j + 1 - 1]);
+            }
+        }
 
         $firstVar = Variant::create([
             'price' => 2550,

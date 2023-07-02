@@ -30,7 +30,7 @@ class StoreProductRequest extends FormRequest
             'brand_id' => ['required', 'gt:0', 'exists:brands,id'],
             'country_id' => ['required', 'gt:0', 'exists:countries,id'],
             'type_id' => ['required', 'gt:0', 'exists:types,id'],
-            'variants' => ['array'],
+            'variants' => ['array'], // 'gte:1'
             'variants.*.id' => ['exists:variants,id'], // проверять что эти value принадлежат нашему измененному продукту
             'variants.*.price' => ['required', 'gt:0'],
             'variants.*.quantity' => ['required', 'gt:0'],

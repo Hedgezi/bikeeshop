@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,10 @@ Route::post('admin/user/{user}', [UserController::class, 'update'])->middleware(
 
 Route::get('product', [ProductController::class, 'index']);
 Route::get('product/{product}', [ProductController::class, 'show']);
+
+Route::get('cart', [CartController::class, 'index'])->middleware('auth');
+Route::post('add-to-cart', [CartController::class, 'add'])->middleware('auth');
+Route::post('delete-from-cart', [CartController::class, 'remove'])->middleware('auth');
 
 
 Auth::routes();

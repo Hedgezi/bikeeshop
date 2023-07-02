@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Cart;
 use App\Models\User;
 
 class UserService
@@ -10,11 +11,14 @@ class UserService
     {
         $user = new User();
         $user->fill($data);
+        $cart = new Cart();
+        $cart->user_id = $user->id;
+        $cart->save();
 
         return $user->save();
     }
 
-    public function destroy(User $user): null
+    public function destroy(User $user): void
     {
         $user->deleteOrFail();
     }

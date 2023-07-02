@@ -3,7 +3,6 @@
 @section("content")
     <form name="createProduct" method="POST" enctype="multipart/form-data" @isset($product) action="/admin/product/{{ $product->id }}" @else action="/admin/product" @endisset>
         @csrf
-        <div class="container">
             <div class="row m-3 col" id="images">
                 <table class="table table-hover">
                     <thead>
@@ -130,7 +129,6 @@
                     @endisset
                 </tbody>
             </table>
-        </div>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>

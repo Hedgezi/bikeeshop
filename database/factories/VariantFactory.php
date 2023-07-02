@@ -16,7 +16,6 @@ class VariantFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word(),
             'price' => $this->faker->randomFloat(3, 1, 80000),
             'quantity' => $this->faker->randomNumber(2)
         ];

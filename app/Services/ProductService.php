@@ -38,7 +38,7 @@ class ProductService
     {
         $product->fill($data);
 
-        $this->setVariants($data['variants'], $product);
+        $this->setVariants($data['variants'] ?? [], $product);
 
         $this->deleteUnusedImages($product->images, collect($data['image_id'] ?? []));
         if ($data['image'] ?? null)
@@ -107,7 +107,8 @@ class ProductService
 
             $savedImage = new Image();
             $savedImage['path'] = $imageName;
-            $savedImage['product_id'] = $productId;
+            $savedImage['imageable_id'] = $productId;
+            $savedImage['imageable_type'] = Product::class;
             $savedImage->save();
         }
     }

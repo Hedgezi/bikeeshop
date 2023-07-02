@@ -15,26 +15,24 @@
                     <h1>{{ $product->name }}</h1>
                 </div>
                 <div class="row">
-{{--                    <select class="form-select">--}}
-{{--                        @if($product->variants)--}}
-{{--                        @foreach($product->variants)--}}
-
-{{--                        @endforeach--}}
-{{--                        @endif--}}
-{{--                    </select>--}}
-                </div>
-                <div class="row">
                     <h3>{{ $product->description }}</h3>
                 </div>
-                <div class="row">
-                    <form action="/add-to-cart" method="POST">
+                <form action="/add-to-cart" method="POST">
+                    <div class="row mt-2 mb-3">
                         @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <button type="submit" class="btn btn-primary">Add to Cart</button>
-                    </form>
-                </div>
+                        <select class="form-select" name="variant_id">
+                            @if($product->variants)
+                                @foreach($product->variants as $variant)
+                                    <option value="{{ $variant->id }}">{{ $variant->price }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="row">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
 @endsection
