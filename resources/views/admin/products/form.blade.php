@@ -16,7 +16,7 @@
                             @foreach($product->images as $image)
                                 <tr id="image{{ $image->id }}">
                                     <td>
-                                        <img src="{{ asset('storage/' . $image->path) }}" alt="{{ $image->path }}" width="100px">
+                                        <img src="{{ asset(Storage::url($image['path'])) }}" alt="{{ Storage::url($image['path']) }}" width="100px">
                                         <input type="hidden" name="image_id[]" value="{{ $image->id }}">
                                     </td>
                                     <td>

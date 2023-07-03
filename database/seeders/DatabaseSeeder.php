@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
+use App\Models\Status;
 use App\Models\User;
 use App\Models\Value;
 use App\Models\Variant;
@@ -117,6 +118,11 @@ class DatabaseSeeder extends Seeder
             'variant_id' => $secondVar->id,
             'attribute_id' => $attributeComputer->id,
             'value' => 'Yes'
+        ]);
+
+        Status::create([
+            'name' => 'Pending',
+            'code' => 0,
         ]);
     }
 }

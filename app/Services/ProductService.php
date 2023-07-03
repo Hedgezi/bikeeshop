@@ -92,21 +92,21 @@ class ProductService
         foreach ($unusedImages as $imageId)
         {
             $image = Image::find($imageId);
-            Storage::delete('public/' . $image['path']);
+            Storage::delete($image['path']);
             $image->delete();
         }
     }
 
     public function addImages(int $productId, array $images): void
     {
-        $time = time();
+        $curTime = time();
         for ($i = 0; $i < count($images); $i++)
         {
-            $imageName = $productId . '_' . $time . '_' . $i . '.' . $images[$i]->getClientOriginalExtension();
-            $images[$i]->storeAs('public', $imageName);
+            $imagePath = 'public/images/products';
+            $path = $images[$i]->store($imagePath);
 
             $savedImage = new Image();
-            $savedImage['path'] = $imageName;
+            $savedImage['path'] = $path;
             $savedImage['imageable_id'] = $productId;
             $savedImage['imageable_type'] = Product::class;
             $savedImage->save();

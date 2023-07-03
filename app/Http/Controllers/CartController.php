@@ -33,4 +33,10 @@ class CartController extends Controller
         }
         return redirect('cart');
     }
+    public function checkout(Request $request)
+    {
+        return view('checkout', [
+            'user' => $request->user(),
+        ]);
+    }
 }
