@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddToCartRequest;
+use App\Http\Requests\RemoveFromCartRequest;
 use App\Models\Cart;
 use App\Services\CartService;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class CartController extends Controller
 
     public function index(Request $request)
     {
-        return view('cart', [
+        return view('orders.cart', [
             'user' => $request->user(),
         ]);
     }
@@ -26,16 +27,17 @@ class CartController extends Controller
         }
         return redirect('cart');
     }
-    public function remove(Request $request)
+    public function remove(RemoveFromCartRequest $request)
     {
-        if (!$this->cartService->removeVariantFromCart($request->user(), $request->input('variant_id'))) {
+        if (!$this->cartService->removeVariantFromCart($request->user(), $request->validated('variant_id'))) {
             throw new \Exception('Could not remove item from cart');
         }
         return redirect('cart');
     }
     public function checkout(Request $request)
     {
-        return view('checkout', [
+        dd($request->all());
+        return view('orders.checkout', [
             'user' => $request->user(),
         ]);
     }

@@ -40,7 +40,7 @@ Route::get('product/{product}', [ProductController::class, 'show']);
 Route::get('cart', [CartController::class, 'index'])->middleware('auth');
 Route::post('add-to-cart', [CartController::class, 'add'])->middleware('auth');
 Route::post('delete-from-cart', [CartController::class, 'remove'])->middleware('auth');
-Route::get('checkout', [CartController::class, 'checkout'])->middleware('auth');
+Route::post('checkout', [CartController::class, 'checkout'])->middleware('auth');
 
 
 Auth::routes();

@@ -1,12 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+    <form action="/checkout" method="POST">
+    @csrf
     @if($user->cart->items)
         @foreach($user->cart->items as $item)
             @php
                 $product = $item->product;
                 $variant = $item->variant;
             @endphp
+            <input type="hidden" name="cartItemId[]" value="{{ $item->id }}">
             <div class="row">
                 <div class="col-4">
                     @if($product->images)
@@ -34,15 +37,10 @@
                     <div class="row">
                         <div class="col-9">
                             <h3 id="price{{ $loop->index }}">{{ $item->price }} -.</h3>
-{{--                            <h3> -.</h3>--}}
                         </div>
-                        <input type="number" name="quantity" id="quantity{{ $loop->index }}" value="{{ $item->quantity }}" class="h-50 text-center col" min="1">
+                        <input type="number" name="quantity[]" id="quantity{{ $loop->index }}" value="{{ $item->quantity }}" class="h-50 text-center col" min="1">
                         <div class="col">
-                            <form action="/delete-from-cart" method="POST">
-                                @csrf
-                                <input type="hidden" name="variant_id" value="{{ $variant->id }}">
-                                <button type="submit" class="btn btn-danger m-1 w-50">-</button>
-                            </form>
+                                <button type="submit" class="btn btn-danger m-1 w-50" id="deleteButton{{ $loop->index }}" form="deleteItem{{ $loop->index }}">-</button>
                         </div>
                     </div>
                     <div class="row">
@@ -57,12 +55,22 @@
             <h3 id="total">Total: {{ $user->cart->total() }} -.</h3>
         </div>
         <div class="col-2">
-            <form action="/checkout" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-primary">Checkout</button>
-            </form>
+        <form action="/checkout" method="POST">
+            <button type="submit" class="btn btn-primary">Checkout</button>
+        </form>
         </div>
     </div>
+    </form>
+
+    @if($user->cart->items)
+        @foreach($user->cart->items as $item)
+            <form action="/delete-from-cart" method="POST" id="deleteItem{{ $loop->index }}">
+                @csrf
+                <input type="hidden" name="variant_id" value="{{ $item->variant->id }}">
+            </form>
+        @endforeach
+    @endif
+
     <script>
         let quantities = [];
         function calculateTotal(index) {
